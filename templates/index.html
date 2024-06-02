@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>在线书店</title>
+    <title>主页</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: url('/static/image/main.jpg') no-repeat center center fixed;
+            background: url('/static/image/home.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -39,35 +39,9 @@
             color: white;
         }
 
-        .welcome {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .welcome h1 {
-            margin-bottom: 20px;
-        }
-
-        .welcome p {
-            font-size: 18px;
-        }
-
-        .cta-button {
-            margin-top: 20px;
-            background: #28a745;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 20px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .cta-button:hover {
-            background: #218838;
+        .welcome-text {
+            font-size: 40px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -81,11 +55,7 @@
     </div>
 
     <div class="container">
-        <div class="welcome">
-            <h1>欢迎来到在线书店</h1>
-            <p>在这里，您可以浏览和购买各种书籍，并享受我们的高质量服务。</p>
-            <a href="/login" class="cta-button">立即浏览书籍</a>
-        </div>
+        <div class="welcome-text">欢迎来到网上书店</div>
     </div>
 </body>
 </html>
