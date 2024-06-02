@@ -96,7 +96,7 @@
             <p>{{ book.author }}</p>
             <p class="price">¥{{ book.price }}</p>
             <p class="description">{{ book.description }}</p>
-            <a class="add-to-cart" href="/cart/add/{{ book.id }}">加入购物车</a>
+            <a class="add-to-cart" href="/cart{{ book.id }}">加入购物车</a>
         </div>
         {% endfor %}
     </div>
