@@ -40,9 +40,9 @@
 
         .cart-item {
             background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
             border-radius: 10px;
-            margin: 10px;
+            padding: 20px;
+            margin: 15px;
             width: 80%;
             display: flex;
             justify-content: space-between;
@@ -51,58 +51,67 @@
 
         .cart-item img {
             width: 100px;
-            border-radius: 10px;
+            height: auto;
+            border-radius: 5px;
         }
 
-        .cart-item-details {
-            flex-grow: 1;
+        .cart-item .details {
+            flex: 1;
             margin-left: 20px;
         }
 
-        .cart-item h2 {
-            margin: 0 0 10px 0;
+        .cart-item .details h3 {
+            margin: 0;
         }
 
-        .cart-item .price {
-            color: green;
-            font-size: 20px;
+        .cart-item .details p {
+            margin: 5px 0;
         }
 
-        .cart-item .quantity {
+        .cart-item .actions {
             display: flex;
             align-items: center;
         }
 
-        .cart-item .quantity input {
+        .cart-item .actions input {
             width: 50px;
+            padding: 5px;
+            margin-right: 10px;
             text-align: center;
-            margin: 0 10px;
         }
 
-        .cart-item .remove {
-            color: red;
-            cursor: pointer;
-        }
-
-        .checkout {
-            margin-top: 20px;
-            background: #28a745;
-            color: white;
-            padding: 15px 30px;
+        .cart-item .actions button {
+            padding: 10px;
+            background-color: #dc3545;
             border: none;
             border-radius: 5px;
-            font-size: 20px;
+            color: white;
+            font-size: 16px;
             cursor: pointer;
         }
 
-        .checkout:hover {
-            background: #218838;
+        .cart-item .actions button:hover {
+            background-color: #c82333;
+        }
+
+        .checkout-btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .checkout-btn:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="/books">主页</a>
+        <a href="/">主页</a>
         <a href="/books">书籍</a>
         <a href="/cart">购物车</a>
         <a href="/profile">个人资料</a>
@@ -113,29 +122,36 @@
         {% for item in cart_items %}
         <div class="cart-item">
             <img src="{{ item.book.cover_image }}" alt="{{ item.book.title }}">
-            <div class="cart-item-details">
-                <h2>{{ item.book.title }}</h2>
-                <p class="price">价格: ¥{{ item.book.price }}</p>
-                <div class="quantity">
-                    <label for="quantity-{{ item.book.id }}">数量:</label>
-                    <input type="number" id="quantity-{{ item.book.id }}" name="quantity-{{ item.book.id }}" value="{{ item.quantity }}" min="1">
+            <div class="details">
+                <h3>{{ item.book.title }}</h3>
+                <p>作者: {{ item.book.author }}</p>
+                <p>价格: ¥{{ item.book.price }}</p>
+                <div class="actions">
+                    <input type="number" value="{{ item.quantity }}" min="1" max="{{ item.book.stock }}">
+                    <button onclick="removeItem({{ item.book.id }})">移除</button>
                 </div>
             </div>
-            <div class="remove" onclick="removeItem('{{ item.book.id }}')">移除</div>
         </div>
         {% endfor %}
-        <button class="checkout" onclick="checkout()">结账</button>
+        <button class="checkout-btn" onclick="checkout()">结账</button>
     </div>
-
     <script>
         function removeItem(bookId) {
-            // TODO: 实现移除书籍的逻辑
-            alert('移除书籍 ID: ' + bookId);
+            fetch(`/cart/remove/${bookId}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });
         }
 
         function checkout() {
-            // 重定向到订单确认页面
-            window.location.href = "/order_confirmation";
+            fetch('/cart/checkout', { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/order_confirmation';
+                    }
+                });
         }
     </script>
 </body>
