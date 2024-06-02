@@ -9,21 +9,12 @@ book_bp = Blueprint('book_bp', __name__, template_folder='../templates')
 def book_detail(book_id):
     book = Book.query.get_or_404(book_id)
     return render_template('book_detail.html', book=book)
-    
+
 @book_bp.route('/books')
 @login_required
 def list_books():
     books = Book.query.all()
-    books_list = [{
-        'id': book.id,
-        'title': book.title,
-        'author': book.author,
-        'price': float(book.price),
-        'description': book.description,
-        'stock': book.stock,
-        'cover_image': book.cover_image
-    } for book in books]
-    return jsonify(books_list)
+    return render_template('books.html', books=books)
 
 @book_bp.route('/books/add', methods=['POST'])
 @login_required
