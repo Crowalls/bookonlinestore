@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线书店</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('/static/image/main.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+
+        .welcome {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .welcome h1 {
+            margin-bottom: 20px;
+        }
+
+        .welcome p {
+            font-size: 18px;
+        }
+
+        .cta-button {
+            margin-top: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 20px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">主页</a>
+        <a href="/books">书籍</a>
+        <a href="/cart">购物车</a>
+        <a href="/profile">个人资料</a>
+        <a href="/logout">登出</a>
+    </div>
+
+    <div class="container">
+        <div class="welcome">
+            <h1>欢迎来到在线书店</h1>
+            <p>在这里，您可以浏览和购买各种书籍，并享受我们的高质量服务。</p>
+            <a href="/login" class="cta-button">立即浏览书籍</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人资料</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('/static/image/other.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .profile-form h2 {
+            margin-bottom: 20px;
+        }
+
+        .profile-form .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .profile-form .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-form .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .profile-form .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .profile-form .submit-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">主页</a>
+        <a href="/books">书籍</a>
+        <a href="/cart">购物车</a>
+        <a href="/profile">个人资料</a>
+        <a href="/logout">登出</a>
+    </div>
+
+    <div class="container">
+        <form class="profile-form" action="{{ url_for('profile.update_profile') }}" method="post">
+            <h2>个人资料</h2>
+            <div class="input-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required>
+            </div>
+            <div class="input-group">
+                <label for="email">邮箱</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+            <div class="input-group">
+                <label for="phone">电话</label>
+                <input type="text" id="phone" name="phone" value="{{ user.phone }}">
+            </div>
+            <button type="submit" class="submit-btn">保存</button>
+        </form>
+    </div>
+</body>
+</html>

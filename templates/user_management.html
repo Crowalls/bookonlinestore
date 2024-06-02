@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('/static/image/main.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-table {
+            width: 80%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .user-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .user-table th, .user-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .user-table th {
+            background: #f4f4f4;
+        }
+
+        .user-table tr:hover {
+            background: #f1f1f1;
+        }
+
+        .user-table .btn {
+            padding: 5px 10px;
+            color: white;
+            background: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .user-table .btn:hover {
+            background: #0056b3;
+        }
+
+        .user-table .btn-danger {
+            background: #dc3545;
+        }
+
+        .user-table .btn-danger:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/admin_home">首页</a>
+        <a href="/admin/book_management">图书管理</a>
+        <a href="/admin/order_management">订单管理</a>
+        <a href="/admin/user_management">用户管理</a>
+        <a href="/admin_logout">登出</a>
+    </div>
+
+    <div class="container">
+        <div class="user-table">
+            <h2>用户管理</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>电话</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone }}</td>
+                        <td>
+                            <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="btn">编辑</a>
+                            <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">删除</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
