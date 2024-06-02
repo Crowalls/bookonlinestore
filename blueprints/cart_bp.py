@@ -1,38 +1,50 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, jsonify, request, redirect, url_for
 from flask_login import login_required, current_user
 from models import db, CartItem, Book
 
-cart_bp = Blueprint('cart_bp', __name__, template_folder='../templates')
+cart_bp = Blueprint('cart', __name__, template_folder='../templates')
 
-@cart_bp.route('/cart')
+@cart_bp.route('/')
 @login_required
-def view_cart():
+def cart_page():
     cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
-    return render_template('cart.html', cart_items=cart_items)
+    cart_books = []
+    for item in cart_items:
+        book = Book.query.get(item.book_id)
+        cart_books.append({
+            'book': book,
+            'quantity': item.quantity
+        })
+    return render_template('cart.html', cart_items=cart_books)
 
-@cart_bp.route('/cart/add/<int:book_id>')
+@cart_bp.route('/items')
 @login_required
-def add_to_cart(book_id):
-    existing_item = CartItem.query.filter_by(user_id=current_user.id, book_id=book_id).first()
-    if existing_item:
-        existing_item.quantity += 1
-    else:
-        new_item = CartItem(user_id=current_user.id, book_id=book_id, quantity=1)
-        db.session.add(new_item)
-    db.session.commit()
-    return redirect(url_for('cart_bp.view_cart'))
+def cart_items():
+    items = CartItem.query.filter_by(user_id=current_user.id).all()
+    items_list = [{
+        'book_id': item.book_id,
+        'title': item.book.title,
+        'author': item.book.author,
+        'price': float(item.book.price),
+        'quantity': item.quantity
+    } for item in items]
+    return jsonify(items_list)
 
-@cart_bp.route('/cart/remove/<int:book_id>', methods=['DELETE'])
+@cart_bp.route('/remove/<int:book_id>', methods=['DELETE'])
 @login_required
-def remove_from_cart(book_id):
-    cart_item = CartItem.query.filter_by(user_id=current_user.id, book_id=book_id).first()
-    if cart_item:
-        db.session.delete(cart_item)
+def remove_cart_item(book_id):
+    item = CartItem.query.filter_by(user_id=current_user.id, book_id=book_id).first()
+    if item:
+        db.session.delete(item)
         db.session.commit()
-    return '', 204
+        return '', 204
+    return '', 404
 
-@cart_bp.route('/cart/checkout', methods=['POST'])
+@cart_bp.route('/checkout', methods=['POST'])
 @login_required
 def checkout():
-    # 结账逻辑
-    return redirect(url_for('order_confirmation'))
+    cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
+    if not cart_items:
+        return redirect(url_for('cart.cart_page'))
+
+    return render_template('order_confirmation.html', cart_items=cart_items)
