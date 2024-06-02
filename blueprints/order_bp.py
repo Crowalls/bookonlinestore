@@ -1,52 +1,41 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from models import db, Order, OrderItem, Book
+from models import Book, Order, OrderItem, db
 
 order_bp = Blueprint('order', __name__, template_folder='../templates')
 
-@order_bp.route('/orders')
+@order_bp.route('/order_confirmation', methods=['GET'])
 @login_required
-def list_orders():
-    orders = Order.query.filter_by(user_id=current_user.id).all()
-    orders_list = []
-    for order in orders:
-        order_items = OrderItem.query.filter_by(order_id=order.id).all()
-        items = [{
-            'title': item.book.title,
-            'quantity': item.quantity,
-            'price': float(item.price)
-        } for item in order_items]
-        orders_list.append({
-            'id': order.id,
-            'items': items,
-            'total': float(order.total),
-            'status': order.status,
-            'created_at': order.created_at.strftime('%Y-%m-%d %H:%M:%S')
-        })
-    return jsonify(orders_list)
+def order_confirmation():
+    cart_items = []
+    books = Book.query.all()
+    return render_template('order_confirmation.html', cart_items=cart_items, books=books)
 
-@order_bp.route('/orders/create', methods=['POST'])
+@order_bp.route('/order_confirmation', methods=['POST'])
 @login_required
-def create_order():
-    data = request.json
-    order = Order(user_id=current_user.id, total=Decimal(data['total']), status='Pending')
+def submit_order():
+    address = request.form['address']
+    payment_method = request.form['payment']
+
+    # 获取购物车项目及其数量
+    cart_items = []
+    for key in request.form.keys():
+        if key.startswith('quantity-'):
+            book_id = int(key.split('-')[1])
+            quantity = int(request.form[key])
+            if quantity > 0:
+                cart_items.append({'book': Book.query.get(book_id), 'quantity': quantity})
+
+    # 创建新订单
+    order = Order(user_id=current_user.id, address=address, payment_method=payment_method)
     db.session.add(order)
     db.session.commit()
 
-    for item in data['items']:
-        book = Book.query.get(item['book_id'])
-        order_item = OrderItem(order_id=order.id, book_id=book.id, quantity=item['quantity'], price=book.price)
+    # 添加订单项目
+    for item in cart_items:
+        order_item = OrderItem(order_id=order.id, book_id=item['book'].id, quantity=item['quantity'])
         db.session.add(order_item)
 
     db.session.commit()
-    return '', 201
-
-@order_bp.route('/orders/cancel/<int:order_id>', methods=['POST'])
-@login_required
-def cancel_order(order_id):
-    order = Order.query.get(order_id)
-    if order and order.user_id == current_user.id:
-        order.status = 'Cancelled'
-        db.session.commit()
-        return '', 204
-    return '', 404
+    flash('订单提交成功', 'success')
+    return redirect(url_for('order.order_confirmation'))
