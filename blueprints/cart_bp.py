@@ -22,20 +22,17 @@ def add_to_cart(book_id):
     db.session.commit()
     return redirect(url_for('cart_bp.view_cart'))
 
-@cart_bp.route('/cart/remove/<int:cart_item_id>')
+@cart_bp.route('/cart/remove/<int:book_id>', methods=['DELETE'])
 @login_required
-def remove_from_cart(cart_item_id):
-    cart_item = CartItem.query.get_or_404(cart_item_id)
-    if cart_item.user_id == current_user.id:
+def remove_from_cart(book_id):
+    cart_item = CartItem.query.filter_by(user_id=current_user.id, book_id=book_id).first()
+    if cart_item:
         db.session.delete(cart_item)
         db.session.commit()
-    return redirect(url_for('cart_bp.view_cart'))
+    return '', 204
 
-@cart_bp.route('/cart/update/<int:cart_item_id>', methods=['POST'])
+@cart_bp.route('/cart/checkout', methods=['POST'])
 @login_required
-def update_cart_item(cart_item_id):
-    cart_item = CartItem.query.get_or_404(cart_item_id)
-    if cart_item.user_id == current_user.id:
-        cart_item.quantity = request.form.get('quantity', type=int)
-        db.session.commit()
-    return redirect(url_for('cart_bp.view_cart'))
+def checkout():
+    # 结账逻辑
+    return redirect(url_for('order_confirmation'))
