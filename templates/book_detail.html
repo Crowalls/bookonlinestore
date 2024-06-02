@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>书籍详情</title>
+    <title>书籍</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: url('/static/image/main.jpg') no-repeat center center fixed;
+            background: url('/static/image/books.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -34,52 +34,32 @@
         .container {
             margin-top: 20px;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            color: white;
         }
 
-        .book-item {
+        .books-list {
+            width: 80%;
             background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
-            margin: 10px;
-            width: 300px;
-            text-align: center;
+            color: black;
         }
 
-        .book-item img {
-            width: 100%;
-            border-radius: 10px;
+        .book-item {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
         }
 
-        .book-item h2 {
-            margin: 10px 0;
-        }
-
-        .book-item p {
-            margin: 10px 0;
-        }
-
-        .book-item .price {
-            color: green;
-            font-size: 20px;
-        }
-
-        .book-item .details-link {
-            display: block;
-            color: #007bff;
-            text-decoration: none;
-            margin-top: 10px;
-        }
-
-        .book-item .details-link:hover {
-            text-decoration: underline;
+        .book-item:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="/books">主页</a>
+        <a href="/">主页</a>
         <a href="/books">书籍</a>
         <a href="/cart">购物车</a>
         <a href="/profile">个人资料</a>
@@ -87,16 +67,20 @@
     </div>
 
     <div class="container">
-        {% for book in books %}
-        <div class="book-item">
-            <img src="{{ book.cover_image }}" alt="{{ book.title }}">
-            <h2>{{ book.title }}</h2>
-            <p>作者: {{ book.author }}</p>
-            <p class="price">价格: ¥{{ book.price }}</p>
-            <p>{{ book.description }}</p>
-            <a href="{{ url_for('book.book_detail', book_id=book.id) }}" class="details-link">查看详情</a>
+        <div class="books-list">
+            <h2>书籍列表</h2>
+            {% for book in books %}
+            <div class="book-item">
+                <h3>{{ book.title }}</h3>
+                <p>作者: {{ book.author }}</p>
+                <p>价格: {{ book.price }}</p>
+                <p>{{ book.description }}</p>
+                <form action="{{ url_for('cart.add_to_cart', book_id=book.id) }}" method="post">
+                    <button type="submit">添加到购物车</button>
+                </form>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </body>
 </html>
