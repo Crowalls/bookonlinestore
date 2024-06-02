@@ -32,13 +32,7 @@ def create_app():
             db.session.add(admin)
             db.session.commit()
 
-    from blueprints.register_bp import register_bp
-    from blueprints.login_bp import login_bp
-    from blueprints.book_bp import book_bp
-    from blueprints.cart_bp import cart_bp
-    from blueprints.profile_bp import profile_bp
-    from blueprints.order_bp import order_bp
-    from blueprints.admin_bp import admin_bp
+    from blueprints import register_bp, login_bp, book_bp, cart_bp, profile_bp, order_bp, admin_bp
 
     app.register_blueprint(register_bp, url_prefix='/')
     app.register_blueprint(login_bp, url_prefix='/')
