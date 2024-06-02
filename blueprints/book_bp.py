@@ -3,8 +3,13 @@ from flask_login import login_required
 from models import db, Book
 from decimal import Decimal
 
-book_bp = Blueprint('book_detail', __name__, template_folder='../templates')
+book_bp = Blueprint('book_bp', __name__, template_folder='../templates')
 
+@book_bp.route('/book/<int:book_id>')
+def book_detail(book_id):
+    book = Book.query.get_or_404(book_id)
+    return render_template('book_detail.html', book=book)
+    
 @book_bp.route('/books')
 @login_required
 def list_books():
