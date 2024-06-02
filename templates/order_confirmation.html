@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: url('/static/image/other.jpg') no-repeat center center fixed;
+            background: url('/static/image/order_confirmation.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -36,145 +36,57 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: white;
         }
 
-        .order-item {
+        .order-form {
             background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
-            margin: 10px;
-            width: 80%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .order-item img {
-            width: 100px;
-            border-radius: 10px;
-        }
-
-        .order-item-details {
-            flex-grow: 1;
-            margin-left: 20px;
-        }
-
-        .order-item h2 {
-            margin: 0 0 10px 0;
-        }
-
-        .order-item .price {
-            color: green;
-            font-size: 20px;
-        }
-
-        .order-item .quantity {
-            display: flex;
-            align-items: center;
-        }
-
-        .order-item .quantity input {
-            width: 50px;
+            width: 300px;
             text-align: center;
-            margin: 0 10px;
         }
 
-        .order-details {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 10px;
-            width: 80%;
-        }
-
-        .order-details h2 {
+        .order-form h2 {
             margin-bottom: 20px;
         }
 
-        .order-details .input-group {
+        .order-form .input-group {
             margin-bottom: 15px;
             text-align: left;
         }
 
-        .order-details .input-group label {
+        .order-form .input-group label {
             display: block;
             margin-bottom: 5px;
         }
 
-        .order-details .input-group input,
-        .order-details .input-group select {
+        .order-form .input-group input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
 
-        .submit-order {
-            margin-top: 20px;
-            background: #28a745;
-            color: white;
-            padding: 15px 30px;
+        .order-form .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
             border: none;
             border-radius: 5px;
-            font-size: 20px;
+            color: white;
+            font-size: 16px;
             cursor: pointer;
         }
 
-        .submit-order:hover {
-            background: #218838;
+        .order-form .submit-btn:hover {
+            background-color: #218838;
         }
     </style>
-    <script>
-        function addBookToOrder() {
-            const bookSelect = document.getElementById('new_book');
-            const quantityInput = document.getElementById('new_quantity');
-            const bookId = bookSelect.value;
-            const bookTitle = bookSelect.options[bookSelect.selectedIndex].text;
-            const quantity = quantityInput.value;
-
-            if (quantity <= 0) {
-                alert('数量必须大于0');
-                return;
-            }
-
-            const cartItemsDiv = document.getElementById('cart-items');
-            const newItemDiv = document.createElement('div');
-            newItemDiv.className = 'order-item';
-
-            newItemDiv.innerHTML = `
-                <div class="order-item-details">
-                    <h2>${bookTitle}</h2>
-                    <p class="price">价格: ¥${bookSelect.options[bookSelect.selectedIndex].getAttribute('data-price')}</p>
-                    <div class="quantity">
-                        <label for="quantity-${bookId}">数量:</label>
-                        <input type="number" id="quantity-${bookId}" name="quantity-${bookId}" value="${quantity}">
-                    </div>
-                </div>
-            `;
-
-            cartItemsDiv.appendChild(newItemDiv);
-            updateTotalPrice();
-        }
-
-        function updateTotalPrice() {
-            const cartItemsDiv = document.getElementById('cart-items');
-            const priceElements = cartItemsDiv.getElementsByClassName('price');
-            const quantityInputs = cartItemsDiv.getElementsByTagName('input');
-            let totalPrice = 0;
-
-            for (let i = 0; i < priceElements.length; i++) {
-                const price = parseFloat(priceElements[i].innerText.replace('价格: ¥', ''));
-                const quantity = parseInt(quantityInputs[i].value);
-                totalPrice += price * quantity;
-            }
-
-            document.getElementById('total-price').innerText = '总价: ¥' + totalPrice.toFixed(2);
-        }
-    </script>
 </head>
 <body>
     <div class="navbar">
-        <a href="/books">主页</a>
+        <a href="/">主页</a>
         <a href="/books">书籍</a>
         <a href="/cart">购物车</a>
         <a href="/profile">个人资料</a>
@@ -182,41 +94,18 @@
     </div>
 
     <div class="container">
-        <div class="order-details">
-            <h2>确认订单信息</h2>
-            <form action="{{ url_for('order.submit_order') }}" method="post">
-                <div id="cart-items">
-                    <!-- 初始无购物车项目 -->
-                </div>
-                <div class="input-group">
-                    <label for="new_book">添加书籍</label>
-                    <select id="new_book" name="new_book">
-                        {% for book in books %}
-                        <option value="{{ book.id }}" data-price="{{ book.price }}">{{ book.title }} - ¥{{ book.price }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="new_quantity">数量</label>
-                    <input type="number" id="new_quantity" name="new_quantity" value="1">
-                </div>
-                <button type="button" onclick="addBookToOrder()">添加书籍</button>
-                <div class="input-group">
-                    <label for="address">收货地址</label>
-                    <input type="text" id="address" name="address" required>
-                </div>
-                <div class="input-group">
-                    <label for="payment">支付方式</label>
-                    <select id="payment" name="payment" required>
-                        <option value="credit_card">信用卡</option>
-                        <option value="debit_card">借记卡</option>
-                        <option value="paypal">PayPal</option>
-                    </select>
-                </div>
-                <p id="total-price">总价: ¥0.00</p>
-                <button type="submit" class="submit-order">提交订单</button>
-            </form>
-        </div>
+        <form class="order-form" action="{{ url_for('order.submit_order') }}" method="post">
+            <h2>订单确认</h2>
+            <div class="input-group">
+                <label for="address">地址</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="input-group">
+                <label for="payment">支付方式</label>
+                <input type="text" id="payment" name="payment" required>
+            </div>
+            <button type="submit" class="submit-btn">提交订单</button>
+        </form>
     </div>
 </body>
 </html>
