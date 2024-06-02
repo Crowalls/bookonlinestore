@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: url('/static/image/other.jpg') no-repeat center center fixed;
+            background: url('/static/image/cart.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -36,73 +36,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: white;
         }
 
-        .cart-item {
+        .cart-list {
+            width: 80%;
             background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
-            margin: 10px;
-            width: 80%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: black;
         }
 
-        .cart-item img {
-            width: 100px;
-            border-radius: 10px;
+        .cart-item {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
         }
 
-        .cart-item-details {
-            flex-grow: 1;
-            margin-left: 20px;
-        }
-
-        .cart-item h2 {
-            margin: 0 0 10px 0;
-        }
-
-        .cart-item .price {
-            color: green;
-            font-size: 20px;
-        }
-
-        .cart-item .quantity {
-            display: flex;
-            align-items: center;
-        }
-
-        .cart-item .quantity input {
-            width: 50px;
-            text-align: center;
-            margin: 0 10px;
-        }
-
-        .cart-item .remove {
-            color: red;
-            cursor: pointer;
-        }
-
-        .checkout {
-            margin-top: 20px;
-            background: #28a745;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .checkout:hover {
-            background: #218838;
+        .cart-item:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="/books">主页</a>
+        <a href="/">主页</a>
         <a href="/books">书籍</a>
         <a href="/cart">购物车</a>
         <a href="/profile">个人资料</a>
@@ -110,33 +67,19 @@
     </div>
 
     <div class="container">
-        {% for item in cart_items %}
-        <div class="cart-item">
-            <img src="{{ item.book.cover_image }}" alt="{{ item.book.title }}">
-            <div class="cart-item-details">
-                <h2>{{ item.book.title }}</h2>
-                <p class="price">价格: ¥{{ item.book.price }}</p>
-                <div class="quantity">
-                    <label for="quantity-{{ item.book.id }}">数量:</label>
-                    <input type="number" id="quantity-{{ item.book.id }}" name="quantity-{{ item.book.id }}" value="{{ item.quantity }}" min="1">
-                </div>
+        <div class="cart-list">
+            <h2>购物车</h2>
+            {% for item in cart_items %}
+            <div class="cart-item">
+                <h3>{{ item.book.title }}</h3>
+                <p>价格: {{ item.book.price }}</p>
+                <p>数量: {{ item.quantity }}</p>
+                <form action="{{ url_for('cart.remove_from_cart', item_id=item.id) }}" method="post">
+                    <button type="submit">移除</button>
+                </form>
             </div>
-            <div class="remove" onclick="removeItem('{{ item.book.id }}')">移除</div>
+            {% endfor %}
         </div>
-        {% endfor %}
-        <button class="checkout" onclick="checkout()">结账</button>
     </div>
-
-    <script>
-        function removeItem(bookId) {
-            // TODO: 实现移除书籍的逻辑
-            alert('移除书籍 ID: ' + bookId);
-        }
-
-        function checkout() {
-            // 重定向到订单确认页面
-            window.location.href = "/order_confirmation";
-        }
-    </script>
 </body>
 </html>
