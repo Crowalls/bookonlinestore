@@ -14,7 +14,7 @@ def book_detail(book_id):
 @login_required
 def list_books():
     books = Book.query.all()
-    return render_template('books.html', books=books)
+    return render_template('book_detail.html', books=books)
 
 @book_bp.route('/books/add', methods=['POST'])
 @login_required
