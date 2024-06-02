@@ -3,7 +3,7 @@ from flask_login import login_required
 from models import db, Book
 from decimal import Decimal
 
-book_bp = Blueprint('book_detail.html', __name__, template_folder='../templates')
+book_bp = Blueprint('book_detail', __name__, template_folder='../templates')
 
 @book_bp.route('/books')
 @login_required
