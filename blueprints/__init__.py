@@ -1,16 +1,21 @@
-from app import app, db
-from models import User, Book
+# __init__.py
 
-with app.app_context():
-    db.create_all()
+from flask import Blueprint
 
-    if not User.query.filter_by(username='testuser').first():
-        user = User(username='testuser', password='testpassword', email='test@example.com')
-        db.session.add(user)
-        db.session.commit()
+# 初始化各个蓝图
+register_bp = Blueprint('register', __name__)
+login_bp = Blueprint('login', __name__)
+book_bp = Blueprint('book', __name__)
+cart_bp = Blueprint('cart', __name__)
+profile_bp = Blueprint('profile', __name__)
+order_bp = Blueprint('order', __name__)
+admin_bp = Blueprint('admin', __name__)
 
-    if not Book.query.filter_by(title='Test Book').first():
-        book = Book(title='Test Book', author='Test Author', price=19.99, description='This is a test book.', stock=10,
-                    cover_image='/static/image/main.jpg')
-        db.session.add(book)
-        db.session.commit()
+# 导入各个蓝图的路由模块
+from . import register_bp_routes
+from . import login_bp_routes
+from . import book_bp_routes
+from . import cart_bp_routes
+from . import profile_bp_routes
+from . import order_bp_routes
+from . import admin_bp_routes
