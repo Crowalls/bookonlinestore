@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户登录</title>
+    <title>登录</title>
     <style>
         body {
             margin: 0;
@@ -13,17 +13,37 @@
             background-size: cover;
         }
 
-        .container {
+        .navbar {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            height: 100vh;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
         }
 
         .login-form {
             background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
+            width: 300px;
             text-align: center;
         }
 
@@ -51,7 +71,7 @@
         .login-form .submit-btn {
             width: 100%;
             padding: 10px;
-            background-color: #28a745;
+            background-color: #007bff;
             border: none;
             border-radius: 5px;
             color: white;
@@ -60,30 +80,22 @@
         }
 
         .login-form .submit-btn:hover {
-            background-color: #218838;
-        }
-
-        .login-form .register-link,
-        .login-form .admin-login {
-            margin-top: 20px;
-        }
-
-        .login-form .register-link a,
-        .login-form .admin-login a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .login-form .register-link a:hover,
-        .login-form .admin-login a:hover {
-            text-decoration: underline;
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <a href="/">主页</a>
+        <a href="/books">书籍</a>
+        <a href="/cart">购物车</a>
+        <a href="/profile">个人资料</a>
+        <a href="/logout">登出</a>
+    </div>
+
     <div class="container">
         <form class="login-form" action="{{ url_for('login.login') }}" method="post">
-            <h2>用户登录</h2>
+            <h2>登录</h2>
             <div class="input-group">
                 <label for="username">用户名</label>
                 <input type="text" id="username" name="username" required>
@@ -93,15 +105,6 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit" class="submit-btn">登录</button>
-            <div class="register-link">
-                <p>还没有账号？<a href="{{ url_for('register.register') }}">点击注册</a></p>
-            </div>
-            <div class="admin-login">
-                <a href="{{ url_for('admin.login') }}">管理员登录</a>
-            </div>
-            <div>
-                <p>忘记密码请联系管理员：赵俊哲或王子航</p>
-            </div>
         </form>
     </div>
 </body>
