@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('/static/image/login.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .login-form h2 {
+            margin-bottom: 20px;
+        }
+
+        .login-form .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .login-form .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .login-form .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-form .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-form .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        .login-form .register-link,
+        .login-form .admin-login {
+            margin-top: 20px;
+        }
+
+        .login-form .register-link a,
+        .login-form .admin-login a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-form .register-link a:hover,
+        .login-form .admin-login a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form class="login-form" action="{{ url_for('login.login') }}" method="post">
+            <h2>用户登录</h2>
+            <div class="input-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="submit-btn">登录</button>
+            <div class="register-link">
+                <p>还没有账号？<a href="{{ url_for('register.register') }}">点击注册</a></p>
+            </div>
+            <div class="admin-login">
+                <a href="{{ url_for('admin.login') }}">管理员登录</a>
+            </div>
+            <div>
+                <p>忘记密码请联系管理员：赵俊哲或王子航</p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
