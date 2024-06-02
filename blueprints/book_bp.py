@@ -9,12 +9,12 @@ book_bp = Blueprint('book_bp', __name__, template_folder='../templates')
 def book_detail(book_id):
     book = Book.query.get_or_404(book_id)
     return render_template('book_detail.html', book=book)
-
+    
 @book_bp.route('/books')
 @login_required
 def list_books():
     books = Book.query.all()
-    return render_template('book_detail.html', books=books)
+    return render_template('book_detail.html', books=books)  # 修改为渲染 book_detail.html 页面
 
 @book_bp.route('/books/add', methods=['POST'])
 @login_required
