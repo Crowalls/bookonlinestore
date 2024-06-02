@@ -40,7 +40,7 @@ def create_app():
     app.register_blueprint(cart_bp, url_prefix='/cart')
     app.register_blueprint(profile_bp, url_prefix='/')
     app.register_blueprint(order_bp, url_prefix='/')
-    app.register_blueprint(admin_bp, url_prefix='/admin')
+    app.register_blueprint(admin_bp, url_prefix='/')
 
     @app.route('/')
     def main():
