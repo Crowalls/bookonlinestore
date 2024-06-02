@@ -12,15 +12,15 @@ def profile():
     return render_template('profile.html', user=current_user)
 
 # 更新个人资料路由，POST 请求
-@profile_bp.route('/profile/update', methods=['POST'])
-@login_required
+@profile_bp.route('/profile/update_profile', methods=['POST'])
+@login_required  # 确保用户已登录
 def update_profile():
     # 获取表单中的数据
     username = request.form.get('username')
     email = request.form.get('email')
     phone = request.form.get('phone')
 
-    # 查询当前用户并更新信息
+    # 更新当前用户信息
     user = User.query.get(current_user.id)
     user.username = username
     user.email = email
