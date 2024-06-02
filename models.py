@@ -1,5 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
+import hmac
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -13,6 +14,10 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+    @staticmethod
+    def verify_password(stored_password, provided_password):
+        return hmac.compare_digest(stored_password, provided_password)
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
