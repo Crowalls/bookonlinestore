@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>书籍列表</title>
+    <title>{{ book.title }} - 书籍详情</title>
     <style>
         body {
             margin: 0;
@@ -32,74 +32,71 @@
         }
 
         .container {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .book-card {
+            margin: 20px auto;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
-            padding: 20px;
-            margin: 15px;
-            width: 200px;
+            max-width: 600px;
+        }
+
+        .book-cover {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .book-info {
             text-align: center;
         }
 
-        .book-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        .book-card h3 {
+        .book-info h2 {
             margin: 10px 0;
         }
 
-        .book-card p {
+        .book-info p {
             margin: 5px 0;
         }
 
-        .book-card .price {
-            font-size: 18px;
+        .book-info .price {
+            font-size: 20px;
             color: #28a745;
         }
 
-        .book-card button {
-            padding: 10px;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
+        .book-info .description {
+            margin-top: 15px;
         }
 
-        .book-card button:hover {
-            background-color: #0056b3;
+        .add-to-cart {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .add-to-cart:hover {
+            background: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="navbar">
         <a href="/">主页</a>
-        <a href="/books">书籍</a>
+        <a href="/books">书籍列表</a>
         <a href="/cart">购物车</a>
         <a href="/profile">个人资料</a>
-        <a href="/logout">登出</a>
     </div>
-
     <div class="container">
-        {% for book in books %}
-        <div class="book-card">
-            <img src="{{ book.cover_image }}" alt="{{ book.title }}">
-            <h3>{{ book.title }}</h3>
-            <p>作者: {{ book.author }}</p>
+        <img class="book-cover" src="{{ book.cover_image }}" alt="{{ book.title }}">
+        <div class="book-info">
+            <h2>{{ book.title }}</h2>
+            <p>{{ book.author }}</p>
             <p class="price">¥{{ book.price }}</p>
-            <a href="/book/{{ book.id }}"><button>详情</button></a>
+            <p class="description">{{ book.description }}</p>
+            <a class="add-to-cart" href="/cart/add/{{ book.id }}">加入购物车</a>
         </div>
-        {% endfor %}
     </div>
 </body>
 </html>
