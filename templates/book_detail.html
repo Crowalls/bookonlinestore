@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ book.title }} - 书籍详情</title>
+    <title>书籍详情</title>
     <style>
         body {
             margin: 0;
@@ -89,6 +89,7 @@
         <a href="/profile">个人资料</a>
     </div>
     <div class="container">
+        {% for book in books %}
         <img class="book-cover" src="{{ book.cover_image }}" alt="{{ book.title }}">
         <div class="book-info">
             <h2>{{ book.title }}</h2>
@@ -97,6 +98,7 @@
             <p class="description">{{ book.description }}</p>
             <a class="add-to-cart" href="/cart/add/{{ book.id }}">加入购物车</a>
         </div>
+        {% endfor %}
     </div>
 </body>
 </html>
