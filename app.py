@@ -3,13 +3,6 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import Config
 from models import db, User
-from blueprints.register_bp import register_bp
-from blueprints.login_bp import login_bp
-from blueprints.book_bp import book_bp
-from blueprints.cart_bp import cart_bp
-from blueprints.profile_bp import profile_bp
-from blueprints.order_bp import order_bp
-from blueprints.admin_bp import admin_bp
 from werkzeug.security import generate_password_hash
 
 def create_app():
@@ -38,6 +31,14 @@ def create_app():
             admin = User(username='admin', password=generate_password_hash('admin123'), email='admin@example.com')
             db.session.add(admin)
             db.session.commit()
+
+    from blueprints.register_bp import register_bp
+    from blueprints.login_bp import login_bp
+    from blueprints.book_bp import book_bp
+    from blueprints.cart_bp import cart_bp
+    from blueprints.profile_bp import profile_bp
+    from blueprints.order_bp import order_bp
+    from blueprints.admin_bp import admin_bp
 
     app.register_blueprint(register_bp, url_prefix='/')
     app.register_blueprint(login_bp, url_prefix='/')
